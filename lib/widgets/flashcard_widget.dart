@@ -20,109 +20,153 @@ class FlashcardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              Row(
-                children: [
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withOpacity(.12),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      flashcard.category,
-                      style: TextStyle(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
-                  const Spacer(),
-
-                  IconButton(
-                    onPressed: onEdit,
-                    icon: const Icon(Icons.edit_outlined),
-                  ),
-
-                  IconButton(
-                    onPressed: onDelete,
-                    icon: const Icon(
-                      Icons.delete_outline,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 18),
-
-              Text(
-                flashcard.question,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(22),
+          onTap: onTap,
+          child: Ink(
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.05),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
                 ),
-              ),
+              ],
+            ),
+            child: Row(
+              children: [
 
-              const SizedBox(height: 12),
-
-              Text(
-                "Tap to view answer",
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey,
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Divider(),
-
-              const SizedBox(height: 8),
-
-              Row(
-                children: [
-
-                  Icon(
-                    Icons.calendar_today_outlined,
-                    size: 16,
-                    color: Colors.grey.shade600,
-                  ),
-
-                  const SizedBox(width: 8),
-
-                  Expanded(
-                    child: Text(
-                      flashcard.createdAt
-                          .toString()
-                          .split(' ')
-                          .first,
-                      style: theme.textTheme.bodySmall,
+                // Left Accent
+                Container(
+                  width: 6,
+                  height: 165,
+                  decoration: const BoxDecoration(
+                    color: Color(0xff6C63FF),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(22),
+                      bottomLeft: Radius.circular(22),
                     ),
                   ),
+                ),
 
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    color: theme.colorScheme.primary,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Row(
+                          children: [
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff6C63FF)
+                                    .withOpacity(.12),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Text(
+                                flashcard.category,
+                                style: const TextStyle(
+                                  color: Color(0xff6C63FF),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+
+                            const Spacer(),
+
+                            IconButton(
+                              onPressed: onEdit,
+                              icon: const Icon(Icons.edit_outlined),
+                            ),
+
+                            IconButton(
+                              onPressed: onDelete,
+                              icon: const Icon(
+                                Icons.delete_outline,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        Text(
+                          flashcard.question,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        Text(
+                          "Tap to reveal answer",
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        const Divider(),
+
+                        const SizedBox(height: 8),
+
+                        Row(
+                          children: [
+
+                            const Icon(
+                              Icons.calendar_month_outlined,
+                              size: 18,
+                              color: Colors.grey,
+                            ),
+
+                            const SizedBox(width: 8),
+
+                            Expanded(
+                              child: Text(
+                                flashcard.createdAt
+                                    .toString()
+                                    .split(" ")
+                                    .first,
+                              ),
+                            ),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xff6C63FF)
+                                    .withOpacity(.10),
+                                borderRadius:
+                                    BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Color(0xff6C63FF),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

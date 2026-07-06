@@ -16,49 +16,57 @@ class ScoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Expanded(
       child: Container(
-        height: 130,
-        margin: const EdgeInsets.symmetric(horizontal: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: theme.cardColor,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 5),
-            ),
-          ],
+          gradient: LinearGradient(
+            colors: [
+              color.withOpacity(.18),
+              color.withOpacity(.08),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(
+            color: color.withOpacity(.15),
+          ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
+
             CircleAvatar(
               radius: 22,
-              backgroundColor: color.withOpacity(.15),
+              backgroundColor: color.withOpacity(.18),
               child: Icon(
                 icon,
                 color: color,
-                size: 24,
               ),
             ),
 
+            const SizedBox(height: 12),
+
             Text(
               value,
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style: const TextStyle(
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
 
+            const SizedBox(height: 5),
+
             Text(
               title,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
                 color: Colors.grey,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],

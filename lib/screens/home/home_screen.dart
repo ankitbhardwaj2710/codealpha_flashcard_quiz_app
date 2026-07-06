@@ -45,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _searchController.dispose();
     super.dispose();
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     final flashcardProvider = context.watch<FlashcardProvider>();
     final scoreProvider = context.watch<ScoreProvider>();
@@ -76,47 +77,167 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-
             /// Welcome Header
-            Text(
-              "Welcome Back 👋",
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF6C63FF), Color(0xFF8B5CF6)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "👋 Welcome Back",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
-            ),
 
-            const SizedBox(height: 6),
+                  const SizedBox(height: 8),
 
-            Text(
-              "Keep learning with your flashcards.",
-              style: Theme.of(context).textTheme.bodyMedium,
+                  const Text(
+                    "Ready to Learn?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  const Text(
+                    "Master your knowledge with flashcards every day.",
+                    style: TextStyle(color: Colors.white70, fontSize: 15),
+                  ),
+
+                  const SizedBox(height: 22),
+
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.local_fire_department,
+                        color: Colors.orange,
+                      ),
+
+                      const SizedBox(width: 8),
+
+                      Text(
+                        "${flashcardProvider.totalCards} Flashcards",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 24),
 
             /// Statistics
-            Row(
-              children: [
-                ScoreCard(
-                  title: "Cards",
-                  value: flashcardProvider.totalCards.toString(),
-                  icon: Icons.style,
-                  color: Colors.deepPurple,
-                ),
-                ScoreCard(
-                  title: "Best",
-                  value:
-                      "${scoreProvider.highestScore.toStringAsFixed(0)}%",
-                  icon: Icons.emoji_events,
-                  color: Colors.orange,
-                ),
-                ScoreCard(
-                  title: "Attempts",
-                  value: scoreProvider.totalAttempts.toString(),
-                  icon: Icons.quiz,
-                  color: Colors.green,
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(22),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(.05),
+                    blurRadius: 15,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Color(0xFFEDE9FE),
+                        child: Icon(Icons.style, color: Color(0xFF6C63FF)),
+                      ),
+
+                      const SizedBox(width: 15),
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Total Flashcards",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+
+                            Text(
+                              flashcardProvider.totalCards.toString(),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const Divider(height: 30),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Icon(
+                              Icons.emoji_events,
+                              color: Colors.orange,
+                            ),
+
+                            const SizedBox(height: 6),
+
+                            Text(
+                              "${scoreProvider.highestScore.toStringAsFixed(0)}%",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+
+                            const Text("Best Score"),
+                          ],
+                        ),
+                      ),
+
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Icon(Icons.quiz, color: Colors.green),
+
+                            const SizedBox(height: 6),
+
+                            Text(
+                              scoreProvider.totalAttempts.toString(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+
+                            const Text("Attempts"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 28),
@@ -159,13 +280,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
             Text(
               "Flashcards",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 16),
-                        if (flashcardProvider.isLoading)
+            if (flashcardProvider.isLoading)
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(32),
@@ -241,16 +362,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
 
                       if (confirm == true && flashcard.id != null) {
-                        await flashcardProvider.deleteFlashcard(
-                          flashcard.id!,
-                        );
+                        await flashcardProvider.deleteFlashcard(flashcard.id!);
 
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(
-                                "Flashcard deleted successfully",
-                              ),
+                              content: Text("Flashcard deleted successfully"),
                             ),
                           );
                         }
