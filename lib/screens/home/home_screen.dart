@@ -6,8 +6,10 @@ import '../../providers/flashcard_provider.dart';
 import '../../providers/score_provider.dart';
 import '../../widgets/category_chip.dart';
 import '../../widgets/flashcard_widget.dart';
-import '../../widgets/score_card.dart';
+// import '../../widgets/score_card.dart';
+import '../add_edit_card/add_edit_card_screen.dart';
 import '../../widgets/search_bar_widget.dart';
+import '../quiz/quiz_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,12 +67,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to Add Card Screen (Later)
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+  onPressed: () async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const AddEditCardScreen(),
       ),
+    );
+
+    if (context.mounted) {
+      context.read<FlashcardProvider>().loadFlashcards();
+    }
+  },
+  icon: const Icon(Icons.add),
+  label: const Text("Add Card"),
+),
 
       body: RefreshIndicator(
         onRefresh: flashcardProvider.refresh,
@@ -329,11 +341,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   return FlashcardWidget(
                     flashcard: flashcard,
                     onTap: () {
-                      // Quiz Screen (Later)
-                    },
-                    onEdit: () {
-                      // Edit Screen (Later)
-                    },
+  if (flashcardProvider.flashcards.isEmpty) return;
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => QuizScreen(
+  flashcards: flashcardProvider.flashcards,
+  initialIndex: index,
+)
+    ),
+  );
+},
+                    onEdit: () async {
+  await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => AddEditCardScreen(
+        flashcard: flashcard,
+      ),
+    ),
+  );
+
+  if (context.mounted) {
+    context.read<FlashcardProvider>().loadFlashcards();
+  }
+},
                     onDelete: () async {
                       final confirm = await showDialog<bool>(
                         context: context,
