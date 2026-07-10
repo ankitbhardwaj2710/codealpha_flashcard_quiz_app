@@ -27,7 +27,7 @@ class _MainNavigationScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
@@ -35,7 +35,9 @@ class _MainNavigationScreenState
 
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
-
+height: 75,
+labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+animationDuration: const Duration(milliseconds: 400),
         onDestinationSelected: (index) {
           setState(() {
             _currentIndex = index;

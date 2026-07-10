@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/flashcard_model.dart';
+// import '../../models/flashcard_model.dart';
 import '../../providers/flashcard_provider.dart';
 import '../../providers/score_provider.dart';
-import '../../widgets/category_chip.dart';
+// import '../../widgets/category_chip.dart';
 import '../../widgets/flashcard_widget.dart';
 // import '../../widgets/score_card.dart';
 import '../add_edit_card/add_edit_card_screen.dart';
-import '../../widgets/search_bar_widget.dart';
+// import '../../widgets/search_bar_widget.dart';
 import '../settings/settings_screen.dart';
 import '../quiz/quiz_screen.dart';
 
@@ -265,16 +265,76 @@ const SizedBox(height: 14),
               ),
             ),
 
-            const SizedBox(height: 28),
-Text(
-  "Search Flashcards",
-  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+           
+
+const SizedBox(height: 10),
+     Text(
+  "Recent Flashcards",
+  style: Theme.of(context).textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),
 ),
 
-const SizedBox(height: 10),
-            /// Search
+const SizedBox(height: 16),
+
+if (flashcardProvider.flashcards.isEmpty)
+  Padding(
+    padding: const EdgeInsets.symmetric(vertical: 40),
+    child: Center(
+      child: Column(
+        children: [
+          const Icon(
+            Icons.style_outlined,
+            size: 70,
+            color: Color(0xFF6C63FF),
+          ),
+
+          const SizedBox(height: 16),
+
+          const Text(
+            "No Flashcards Yet",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          const Text(
+            "Go to the Flashcards tab to create your first flashcard.",
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ),
+  )
+else
+  ...flashcardProvider.flashcards
+      .take(3)
+      .map(
+        (flashcard) => FlashcardWidget(
+          flashcard: flashcard,
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => QuizScreen(
+                  flashcards: flashcardProvider.flashcards,
+                  initialIndex: flashcardProvider.flashcards.indexOf(
+                    flashcard,
+                  ),
+                ),
+              ),
+            );
+
+            if (context.mounted) {
+              context.read<ScoreProvider>().loadScores();
+            }
+          },
+        ),
+      ),
+
             
           ],
         ),
