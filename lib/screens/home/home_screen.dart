@@ -9,6 +9,7 @@ import '../../widgets/flashcard_widget.dart';
 // import '../../widgets/score_card.dart';
 import '../add_edit_card/add_edit_card_screen.dart';
 import '../../widgets/search_bar_widget.dart';
+import '../settings/settings_screen.dart';
 import '../quiz/quiz_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -60,8 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // Settings Screen (Later)
-            },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const SettingsScreen(),
+    ),
+  );
+},
             icon: const Icon(Icons.settings_outlined),
           ),
         ],
@@ -152,7 +158,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             const SizedBox(height: 24),
+Text(
+  "Your Progress",
+  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.bold,
+      ),
+),
 
+const SizedBox(height: 14),
             /// Statistics
             Container(
               padding: const EdgeInsets.all(20),
@@ -253,162 +266,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             const SizedBox(height: 28),
-
-            /// Search
-            SearchBarWidget(
-              controller: _searchController,
-              onChanged: (value) {
-                flashcardProvider.searchFlashcards(value);
-              },
-            ),
-
-            const SizedBox(height: 20),
-
-            /// Categories
-            SizedBox(
-              height: 45,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-
-                  return CategoryChip(
-                    title: category,
-                    isSelected: selectedCategory == category,
-                    onTap: () {
-                      setState(() {
-                        selectedCategory = category;
-                      });
-
-                      flashcardProvider.filterByCategory(category);
-                    },
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            Text(
-              "Flashcards",
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 16),
-            if (flashcardProvider.isLoading)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32),
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            else if (flashcardProvider.flashcards.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.style_outlined,
-                      size: 90,
-                      color: Colors.grey.shade400,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "No Flashcards Found",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Tap the + button to create your first flashcard.",
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-              )
-            else
-              ListView.builder(
-                itemCount: flashcardProvider.flashcards.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final FlashcardModel flashcard =
-                      flashcardProvider.flashcards[index];
-
-                  return FlashcardWidget(
-                    flashcard: flashcard,
-                    onTap: () {
-  if (flashcardProvider.flashcards.isEmpty) return;
-
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => QuizScreen(
-  flashcards: flashcardProvider.flashcards,
-  initialIndex: index,
-)
-    ),
-  );
-},
-                    onEdit: () async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => AddEditCardScreen(
-        flashcard: flashcard,
+Text(
+  "Search Flashcards",
+  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.bold,
       ),
-    ),
-  );
+),
 
-  if (context.mounted) {
-    context.read<FlashcardProvider>().loadFlashcards();
-  }
-},
-                    onDelete: () async {
-                      final confirm = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Delete Flashcard"),
-                            content: const Text(
-                              "Are you sure you want to delete this flashcard?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, false);
-                                },
-                                child: const Text("Cancel"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context, true);
-                                },
-                                child: const Text("Delete"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      if (confirm == true && flashcard.id != null) {
-                        await flashcardProvider.deleteFlashcard(flashcard.id!);
-
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Flashcard deleted successfully"),
-                            ),
-                          );
-                        }
-                      }
-                    },
-                  );
-                },
-              ),
+const SizedBox(height: 10),
+            /// Search
+            
           ],
         ),
       ),

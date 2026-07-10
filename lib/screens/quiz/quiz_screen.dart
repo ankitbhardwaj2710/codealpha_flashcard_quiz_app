@@ -80,46 +80,63 @@ class _QuizScreenState extends State<QuizScreen> {
     nextCard();
   }
 
-  void finishQuiz() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Quiz Finished 🎉"),
+  Future<void> finishQuiz() async {
+  await context.read<ScoreProvider>().saveScore(
+    correct: correctAnswers,
+    wrong: wrongAnswers,
+  );
 
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+  if (!mounted) return;
 
-              Text(
-                "Correct : $correctAnswers",
-              ),
+  final total = correctAnswers + wrongAnswers;
+  final percentage =
+      total == 0 ? 0 : (correctAnswers / total) * 100;
 
-              const SizedBox(height: 8),
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) {
+      return AlertDialog(
+        title: const Text("🎉 Quiz Completed"),
 
-              Text(
-                "Wrong : $wrongAnswers",
-              ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
 
-            ],
-          ),
+            Text(
+              "Correct : $correctAnswers",
+            ),
 
-          actions: [
+            const SizedBox(height: 8),
 
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              child: const Text("Done"),
+            Text(
+              "Wrong : $wrongAnswers",
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              "Score : ${percentage.toStringAsFixed(0)}%",
             ),
 
           ],
-        );
-      },
-    );
-  }
+        ),
+
+        actions: [
+
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text("Done"),
+          ),
+
+        ],
+      );
+    },
+  );
+}
     @override
   Widget build(BuildContext context) {
     return Scaffold(
