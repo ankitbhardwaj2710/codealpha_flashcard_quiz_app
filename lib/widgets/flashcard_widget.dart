@@ -33,7 +33,7 @@ class FlashcardWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(22),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -72,7 +72,7 @@ class FlashcardWidget extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 color: const Color(0xff6C63FF)
-                                    .withOpacity(.12),
+                                    .withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               child: Text(
@@ -148,7 +148,7 @@ class FlashcardWidget extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                 color: const Color(0xff6C63FF)
-                                    .withOpacity(.10),
+                                    .withValues(alpha: 0.10),
                                 borderRadius:
                                     BorderRadius.circular(50),
                               ),

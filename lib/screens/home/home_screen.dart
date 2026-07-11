@@ -9,7 +9,7 @@ import '../../widgets/flashcard_widget.dart';
 // import '../../widgets/score_card.dart';
 import '../add_edit_card/add_edit_card_screen.dart';
 // import '../../widgets/search_bar_widget.dart';
-import '../settings/settings_screen.dart';
+// import '../settings/settings_screen.dart';
 import '../quiz/quiz_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,15 +33,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String selectedCategory = "All";
 
-  @override
-  void initState() {
-    super.initState();
+ @override
+void initState() {
+  super.initState();
 
-    Future.microtask(() {
-      context.read<FlashcardProvider>().loadFlashcards();
-      context.read<ScoreProvider>().loadScores();
-    });
-  }
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!mounted) return;
+
+    context.read<FlashcardProvider>().loadFlashcards();
+    context.read<ScoreProvider>().loadScores();
+  });
+}
 
   @override
   void dispose() {
@@ -56,22 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Flashcard Quiz"),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const SettingsScreen(),
-    ),
-  );
-},
-            icon: const Icon(Icons.settings_outlined),
-          ),
-        ],
-      ),
+  title: const Text("Flashcards"),
+  centerTitle: true,
+  elevation: 0,
+  surfaceTintColor: Colors.transparent,
+),
 
       floatingActionButton: FloatingActionButton.extended(
   onPressed: () async {
@@ -174,7 +165,7 @@ const SizedBox(height: 14),
                 borderRadius: BorderRadius.circular(22),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 15,
                     offset: const Offset(0, 6),
                   ),
@@ -184,10 +175,17 @@ const SizedBox(height: 14),
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
-                        backgroundColor: Color(0xFFEDE9FE),
-                        child: Icon(Icons.style, color: Color(0xFF6C63FF)),
-                      ),
+                      CircleAvatar(
+  radius: 45,
+  backgroundColor: const Color(
+    0xFF6C63FF,
+  ).withValues(alpha: 0.12),
+  child: const Icon(
+    Icons.style,
+    size: 42,
+    color: Color(0xFF6C63FF),
+  ),
+),
 
                       const SizedBox(width: 15),
 

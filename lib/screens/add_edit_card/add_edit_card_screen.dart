@@ -139,7 +139,7 @@ class _AddEditCardScreenState extends State<AddEditCardScreen> {
             const SizedBox(height: 20),
 
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               decoration: const InputDecoration(
                 labelText: "Category",
               ),

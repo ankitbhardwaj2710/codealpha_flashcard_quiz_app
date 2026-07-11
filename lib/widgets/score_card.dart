@@ -24,14 +24,14 @@ class ScoreCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             colors: [
-              color.withOpacity(.18),
-              color.withOpacity(.08),
+              color.withValues(alpha: 0.18),
+              color.withValues(alpha: 0.08),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: color.withOpacity(.15),
+            color: color.withValues(alpha: 0.15),
           ),
         ),
         child: Column(
@@ -40,7 +40,7 @@ class ScoreCard extends StatelessWidget {
 
             CircleAvatar(
               radius: 22,
-              backgroundColor: color.withOpacity(.18),
+              backgroundColor: color.withValues(alpha: 0.18),
               child: Icon(
                 icon,
                 color: color,

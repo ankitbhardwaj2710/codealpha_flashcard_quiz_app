@@ -27,7 +27,7 @@ class _MainNavigationScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(extendBody: true,
+    return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
