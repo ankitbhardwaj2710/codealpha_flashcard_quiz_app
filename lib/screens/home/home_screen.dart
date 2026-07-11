@@ -328,6 +328,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
+                  SizedBox(
+  width: double.infinity,
+  height: 55,
+  child: ElevatedButton.icon(
+    onPressed: flashcardProvider.flashcards.isEmpty
+        ? null
+        : () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => QuizScreen(
+                  flashcards: flashcardProvider.flashcards,
+                  initialIndex: 0,
+                ),
+              ),
+            );
+
+            if (!context.mounted) return;
+
+            await context.read<ScoreProvider>().loadScores();
+          },
+    icon: const Icon(Icons.play_arrow_rounded),
+    label: const Text("Start Quiz"),
+  ),
+),
           ],
         ),
       ),
