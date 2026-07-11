@@ -41,18 +41,13 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final flashcardProvider = context.watch<FlashcardProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Flashcards"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Flashcards"), centerTitle: true),
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => const AddEditCardScreen(),
-            ),
+            MaterialPageRoute(builder: (_) => const AddEditCardScreen()),
           );
 
           if (context.mounted) {
@@ -70,9 +65,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           children: [
             Text(
               "Search Flashcards",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 10),
@@ -88,9 +83,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
             Text(
               "Categories",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 10),
@@ -122,18 +117,16 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
             Text(
               "All Flashcards",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 16),
-                        if (flashcardProvider.isLoading)
+            if (flashcardProvider.isLoading)
               const Padding(
                 padding: EdgeInsets.all(40),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: Center(child: CircularProgressIndicator()),
               )
             else if (flashcardProvider.flashcards.isEmpty)
               Padding(
@@ -170,8 +163,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: flashcardProvider.flashcards.length,
                 itemBuilder: (context, index) {
-                  final flashcard =
-                      flashcardProvider.flashcards[index];
+                  final flashcard = flashcardProvider.flashcards[index];
 
                   return FlashcardWidget(
                     flashcard: flashcard,
@@ -196,16 +188,13 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => AddEditCardScreen(
-                            flashcard: flashcard,
-                          ),
+                          builder: (_) =>
+                              AddEditCardScreen(flashcard: flashcard),
                         ),
                       );
 
                       if (context.mounted) {
-                        context
-                            .read<FlashcardProvider>()
-                            .loadFlashcards();
+                        context.read<FlashcardProvider>().loadFlashcards();
                       }
                     },
 
@@ -219,32 +208,24 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, false),
+                              onPressed: () => Navigator.pop(context, false),
                               child: const Text("Cancel"),
                             ),
                             ElevatedButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, true),
+                              onPressed: () => Navigator.pop(context, true),
                               child: const Text("Delete"),
                             ),
                           ],
                         ),
                       );
 
-                      if (confirm == true &&
-                          flashcard.id != null) {
-                        await flashcardProvider.deleteFlashcard(
-                          flashcard.id!,
-                        );
+                      if (confirm == true && flashcard.id != null) {
+                        await flashcardProvider.deleteFlashcard(flashcard.id!);
 
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(
-                                "Flashcard deleted successfully",
-                              ),
+                              content: Text("Flashcard deleted successfully"),
                             ),
                           );
                         }
@@ -253,31 +234,31 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   );
                 },
               ),
-              SizedBox(
-  width: double.infinity,
-  height: 55,
-  child: ElevatedButton.icon(
-    onPressed: flashcardProvider.flashcards.isEmpty
-        ? null
-        : () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => QuizScreen(
-                  flashcards: flashcardProvider.flashcards,
-                  initialIndex: 0,
-                ),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton.icon(
+                onPressed: flashcardProvider.flashcards.isEmpty
+                    ? null
+                    : () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => QuizScreen(
+                              flashcards: flashcardProvider.flashcards,
+                              initialIndex: 0,
+                            ),
+                          ),
+                        );
+
+                        if (!context.mounted) return;
+
+                        await context.read<ScoreProvider>().loadScores();
+                      },
+                icon: const Icon(Icons.play_arrow_rounded),
+                label: const Text("Start Quiz"),
               ),
-            );
-
-            if (!context.mounted) return;
-
-            await context.read<ScoreProvider>().loadScores();
-          },
-    icon: const Icon(Icons.play_arrow_rounded),
-    label: const Text("Start Quiz"),
-  ),
-),
+            ),
           ],
         ),
       ),
