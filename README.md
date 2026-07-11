@@ -239,7 +239,7 @@ Make sure you have installed:
 ### Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/ankitbhardwaj2710/codealpha_flashcard_quiz_app
 ```
 
 ### Navigate to the Project
