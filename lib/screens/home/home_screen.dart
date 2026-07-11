@@ -33,17 +33,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String selectedCategory = "All";
 
- @override
-void initState() {
-  super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
 
-    context.read<FlashcardProvider>().loadFlashcards();
-    context.read<ScoreProvider>().loadScores();
-  });
-}
+      context.read<FlashcardProvider>().loadFlashcards();
+      context.read<ScoreProvider>().loadScores();
+    });
+  }
 
   @override
   void dispose() {
@@ -58,28 +58,26 @@ void initState() {
 
     return Scaffold(
       appBar: AppBar(
-  title: const Text("Flashcards"),
-  centerTitle: true,
-  elevation: 0,
-  surfaceTintColor: Colors.transparent,
-),
+        title: const Text("Flashcards"),
+        centerTitle: true,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+      ),
 
       floatingActionButton: FloatingActionButton.extended(
-  onPressed: () async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const AddEditCardScreen(),
-      ),
-    );
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddEditCardScreen()),
+          );
 
-    if (context.mounted) {
-      context.read<FlashcardProvider>().loadFlashcards();
-    }
-  },
-  icon: const Icon(Icons.add),
-  label: const Text("Add Card"),
-),
+          if (context.mounted) {
+            context.read<FlashcardProvider>().loadFlashcards();
+          }
+        },
+        icon: const Icon(Icons.add),
+        label: const Text("Add Card"),
+      ),
 
       body: RefreshIndicator(
         onRefresh: flashcardProvider.refresh,
@@ -149,14 +147,15 @@ void initState() {
             ),
 
             const SizedBox(height: 24),
-Text(
-  "Your Progress",
-  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-      ),
-),
+            Text(
+              "Your Progress",
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            ),
 
-const SizedBox(height: 14),
+            const SizedBox(height: 14),
+
             /// Statistics
             Container(
               padding: const EdgeInsets.all(20),
@@ -176,16 +175,16 @@ const SizedBox(height: 14),
                   Row(
                     children: [
                       CircleAvatar(
-  radius: 45,
-  backgroundColor: const Color(
-    0xFF6C63FF,
-  ).withValues(alpha: 0.12),
-  child: const Icon(
-    Icons.style,
-    size: 42,
-    color: Color(0xFF6C63FF),
-  ),
-),
+                        radius: 45,
+                        backgroundColor: const Color(
+                          0xFF6C63FF,
+                        ).withValues(alpha: 0.12),
+                        child: const Icon(
+                          Icons.style,
+                          size: 42,
+                          color: Color(0xFF6C63FF),
+                        ),
+                      ),
 
                       const SizedBox(width: 15),
 
@@ -263,77 +262,72 @@ const SizedBox(height: 14),
               ),
             ),
 
-           
-
-const SizedBox(height: 10),
-     Text(
-  "Recent Flashcards",
-  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-      ),
-),
-
-const SizedBox(height: 16),
-
-if (flashcardProvider.flashcards.isEmpty)
-  Padding(
-    padding: const EdgeInsets.symmetric(vertical: 40),
-    child: Center(
-      child: Column(
-        children: [
-          const Icon(
-            Icons.style_outlined,
-            size: 70,
-            color: Color(0xFF6C63FF),
-          ),
-
-          const SizedBox(height: 16),
-
-          const Text(
-            "No Flashcards Yet",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 10),
+            Text(
+              "Recent Flashcards",
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-          ),
 
-          const SizedBox(height: 8),
+            const SizedBox(height: 16),
 
-          const Text(
-            "Go to the Flashcards tab to create your first flashcard.",
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    ),
-  )
-else
-  ...flashcardProvider.flashcards
-      .take(3)
-      .map(
-        (flashcard) => FlashcardWidget(
-          flashcard: flashcard,
-          onTap: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => QuizScreen(
-                  flashcards: flashcardProvider.flashcards,
-                  initialIndex: flashcardProvider.flashcards.indexOf(
-                    flashcard,
+            if (flashcardProvider.flashcards.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.style_outlined,
+                        size: 70,
+                        color: Color(0xFF6C63FF),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      const Text(
+                        "No Flashcards Yet",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      const Text(
+                        "Go to the Flashcards tab to create your first flashcard.",
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            );
+              )
+            else
+              ...flashcardProvider.flashcards
+                  .take(3)
+                  .map(
+                    (flashcard) => FlashcardWidget(
+                      flashcard: flashcard,
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => QuizScreen(
+                              flashcards: flashcardProvider.flashcards,
+                              initialIndex: flashcardProvider.flashcards
+                                  .indexOf(flashcard),
+                            ),
+                          ),
+                        );
 
-            if (context.mounted) {
-              context.read<ScoreProvider>().loadScores();
-            }
-          },
-        ),
-      ),
-
-            
+                        if (context.mounted) {
+                          context.read<ScoreProvider>().loadScores();
+                        }
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

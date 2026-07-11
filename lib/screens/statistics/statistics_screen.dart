@@ -19,15 +19,11 @@ class StatisticsScreen extends StatelessWidget {
     final latest = scoreProvider.latestScore;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Statistics"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Statistics"), centerTitle: true),
 
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-
           _StatCard(
             title: "Total Flashcards",
             value: totalCards.toString(),
@@ -57,9 +53,9 @@ class StatisticsScreen extends StatelessWidget {
 
           Text(
             "Latest Quiz",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 12),
@@ -68,9 +64,7 @@ class StatisticsScreen extends StatelessWidget {
             const Card(
               child: Padding(
                 padding: EdgeInsets.all(20),
-                child: Center(
-                  child: Text("No quiz attempts yet."),
-                ),
+                child: Center(child: Text("No quiz attempts yet.")),
               ),
             )
           else
@@ -80,23 +74,15 @@ class StatisticsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-                    Text(
-                      "Correct : ${latest['correct']}",
-                    ),
+                    Text("Correct : ${latest['correct']}"),
 
                     const SizedBox(height: 8),
 
-                    Text(
-                      "Wrong : ${latest['wrong']}",
-                    ),
+                    Text("Wrong : ${latest['wrong']}"),
 
                     const SizedBox(height: 8),
 
-                    Text(
-                      "Score : ${latest['percentage'].toStringAsFixed(0)}%",
-                    ),
-
+                    Text("Score : ${latest['percentage'].toStringAsFixed(0)}%"),
                   ],
                 ),
               ),
@@ -124,9 +110,7 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: color.withValues(alpha: 0.15),
@@ -135,10 +119,7 @@ class _StatCard extends StatelessWidget {
         title: Text(title),
         subtitle: Text(
           value,
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
     );
